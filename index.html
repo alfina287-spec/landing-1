@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Историческая книга | Интернет-магазин</title>
+    <!-- Подключение шрифтов (Google Fonts) -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,700;1,400&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Подключение иконок (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- ПЕРЕМЕННЫЕ И БАЗОВЫЕ НАСТРОЙКИ --- */
+        :root {
+            --primary-color: #c4703a; /* Теплый терракотовый */
+            --primary-dark: #8b4a22;  /* Глубокий медный */
+            --secondary-color: #fff2e3; /* Теплый кремовый фон */
+            --text-color: #3b2a1e;
+            --light-text: #fffaf4;
+            --accent-green: #d39c58; /* Теплый янтарный акцент */
+            --font-heading: 'Merriweather', serif; /* Для атмосферы истории */
+            --font-body: 'Montserrat', sans-serif; /* Для современного чтения */
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #fff8f0;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* --- НАВИГАЦИЯ --- */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            font-family: var(--font-heading);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Гамбургер меню для мобильных */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- ГЛАВНЫЙ ЭКРАН (HERO) --- */
+        .hero {
+            height: 90vh;
+            /* осветлённый кофейный оверлей для лучшей читаемости фото */
+            background: linear-gradient(rgba(92, 54, 33, 0.55), rgba(92, 54, 33, 0.55)), 
+                         url('ondrej-bocek-SehoBKUzYgw-unsplash.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--light-text);
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+
+        .hero-epigraph {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-style: italic;
+            max-width: 720px;
+            margin: -10px 0 24px;
+            color: #f8efe6;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.45);
+        }
+
+        .hero-epigraph span {
+            display: block;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-style: normal;
+            opacity: 0.85;
+            margin-top: 6px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            border: none;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 15px rgba(196, 112, 58, 0.35);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 74, 34, 0.5);
+        }
+
+        /* --- ОБЩИЕ СТИЛИ СЕКЦИЙ --- */
+        section {
+            padding: 80px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent-green);
+            margin: 15px auto 0;
+        }
+
+        /* --- О НАС --- */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image img {
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* --- НОВИНКИ (GRID) --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .book-img {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            background-color: #f1e3d5;
+        }
+
+        .book-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            color: #666;
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .book-price {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .card-btn {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .card-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* --- РАЗДЕЛЫ ПО ЯЗЫКАМ --- */
+        .category-section {
+            background-color: var(--secondary-color);
+            text-align: center;
+            border-radius: 20px;
+            margin: 40px 5%;
+            padding: 60px 20px;
+        }
+
+        .split-section {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0;
+            gap: 20px; /* визуальное разделение блоков */
+            background-color: #fff8f0; /* фон между блоками в кофейном тоне */
+        }
+
+        .split-box {
+            flex: 1;
+            min-width: 300px;
+            padding: 80px 40px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px; /* чтобы блоки читались как отдельные карточки */
+            box-shadow: 0 12px 30px rgba(59, 42, 30, 0.25);
+        }
+
+        .split-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* кофейный тёплый оверлей в стиле первой страницы */
+            background: linear-gradient(
+                135deg,
+                rgba(140, 78, 46, 0.55),
+                rgba(92, 54, 33, 0.55)
+            );
+            z-index: 1;
+        }
+
+        .split-box > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .bg-ru {
+            background: 
+                linear-gradient(
+                    135deg,
+                    rgba(196, 112, 58, 0.4),
+                    rgba(92, 54, 33, 0.45)
+                ),
+                url('https://images.unsplash.com/photo-1524578271613-d550eacf6090?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+        }
+
+        .bg-en {
+            background: 
+                linear-gradient(
+                    135deg,
+                    rgba(211, 156, 88, 0.4),
+                    rgba(139, 74, 34, 0.45)
+                ),
+                url('https://images.unsplash.com/photo-1463320726281-696a485928c7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+        }
+
+        .split-box h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- ОБМЕН (Поменяемся?) --- */
+        #exchange {
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .exchange-icons {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 40px 0;
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step p {
+            font-size: 1rem;
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* --- ЗАКАЗ И ФОРМА --- */
+        #order {
+            background-color: var(--secondary-color);
+        }
+
+        .order-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(23, 162, 184, 0.3);
+        }
+
+        /* --- КОНТАКТЫ И FOOTER --- */
+        #contact {
+            background-color: #3b2a1e;
+            color: white;
+            padding-bottom: 20px;
+        }
+
+        #contact .section-title {
+            color: white;
+        }
+
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .contact-item {
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            color: var(--accent-green);
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #e7d6c5;
+        }
+
+        /* --- ОТЗЫВЫ --- */
+        .testimonials-section {
+            background-color: var(--secondary-color);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--accent-green);
+            opacity: 0.3;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-green);
+        }
+
+        .testimonial-info h4 {
+            color: var(--primary-dark);
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .testimonial-info .stars {
+            color: var(--accent-green);
+            font-size: 0.85rem;
+        }
+
+        /* --- FADE-IN АНИМАЦИЯ --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- КНОПКА НАВЕРХ --- */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(196, 112, 58, 0.4);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 74, 34, 0.5);
+        }
+
+        /* --- АДАПТИВНОСТЬ --- */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .menu-toggle {
+                display: block;
+                color: var(--primary-dark);
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                gap: 20px;
+                transform: scaleY(0);
+                transform-origin: top;
+                transition: var(--transition);
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                transform: scaleY(1);
+            }
+
+            .about-content {
+                flex-direction: column;
+            }
+
+            .about-image {
+                order: -1;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Навигация -->
+    <header class="navbar">
+        <div class="logo">
+            <i class="fas fa-book-reader"></i> Историческая Книга
+        </div>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <nav class="nav-links" id="nav-links">
+            <a href="#hero">Главная</a>
+            <a href="#about">О нас</a>
+            <a href="#new-arrivals">Новинки</a>
+            <a href="#books-ru">Книги</a>
+            <a href="#exchange">Обмен</a>
+            <a href="#testimonials">Отзывы</a>
+            <a href="#order">Заказ</a>
+            <a href="#contact">Контакты</a>
+        </nav>
+    </header>
+
+    <!-- Главный экран (Hero) -->
+    <section id="hero" class="hero">
+        <h1>Погрузитесь в тайны прошлого</h1>
+        <p>Лучшая коллекция исторической литературы: от античности до новейшего времени. Найдите книгу, которая изменит ваш взгляд на историю.</p>
+        <blockquote class="hero-epigraph">
+            «Не надейтесь избавиться от книг»
+            <span>— Умберто Эко</span>
+        </blockquote>
+        <a href="#new-arrivals" class="btn btn-primary">Смотреть каталог</a>
+    </section>
+
+    <!-- О нас -->
+    <section id="about">
+        <h2 class="section-title">Наша История</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Мы — больше, чем просто книжный магазин. «Историческая книга» начиналась как маленький клуб любителей истории в 2010 году. Сегодня мы являемся ведущим специализированным онлайн-ритейлером, предлагающим редкие издания, мемуары, научные монографии и качественную историческую беллетристику.</p>
+                <br>
+                <p>Наша миссия — сохранять память поколений и делать качественные знания доступными для каждого. Мы верим, что книга — это лучший портал в другую эпоху.</p>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Старинная библиотека">
+            </div>
+        </div>
+    </section>
+
+    <!-- Новинки (Меню предпросмотра) -->
+    <section id="new-arrivals">
+        <h2 class="section-title">Последние поступления</h2>
+        <div class="grid-container">
+            <!-- Книга 1 -->
+            <div class="book-card">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Книга" class="book-img">
+                <div class="book-info">
+                    <div>
+                        <h3 class="book-title">Тайны Рима</h3>
+                        <p class="book-author">Альберто Анджела</p>
+                        <p class="book-price">850 ₽</p>
+                    </div>
+                    <button class="card-btn">В корзину</button>
+                </div>
+            </div>
+            <!-- Книга 2 -->
+            <div class="book-card">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Книга" class="book-img">
+                <div class="book-info">
+                    <div>
+                        <h3 class="book-title">История России XX век</h3>
+                        <p class="book-author">Зубов А.Б.</p>
+                        <p class="book-price">1200 ₽</p>
+                    </div>
+                    <button class="card-btn">В корзину</button>
+                </div>
+            </div>
+            <!-- Книга 3 -->
+            <div class="book-card">
+                <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Книга" class="book-img">
+                <div class="book-info">
+                    <div>
+                        <h3 class="book-title">Средневековье</h3>
+                        <p class="book-author">Умберто Эко</p>
+                        <p class="book-price">990 ₽</p>
+                    </div>
+                    <button class="card-btn">В корзину</button>
+                </div>
+            </div>
+            <!-- Книга 4 -->
+            <div class="book-card">
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Книга" class="book-img">
+                <div class="book-info">
+                    <div>
+                        <h3 class="book-title">Черчилль: Биография</h3>
+                        <p class="book-author">Мартин Гилберт</p>
+                        <p class="book-price">1500 ₽</p>
+                    </div>
+                    <button class="card-btn">В корзину</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Разделы по языкам (Split Section) -->
+    <section class="split-section" id="books-ru">
+        <div class="split-box bg-ru">
+            <h2>Книги на русском языке</h2>
+            <p>Классические труды отечественных историков, архивные документы и современные бестселлеры.</p>
+            <br>
+            <a href="#" class="btn btn-primary">Перейти в раздел</a>
+        </div>
+        <div class="split-box bg-en" id="foreign-books">
+            <h2>Foreign Books</h2>
+            <p>Original editions in English, French and German. Rare imports and academic publications.</p>
+            <br>
+            <a href="#" class="btn btn-primary">View Collection</a>
+        </div>
+    </section>
+
+    <!-- Обмен книг -->
+    <section id="exchange">
+        <h2 class="section-title">Поменяемся?</h2>
+        <p style="max-width: 600px; margin: 0 auto;">Прочитали книгу и она пылится на полке? Принесите её нам и получите скидку на новую или обменяйте на книгу из нашего обменного фонда.</p>
+        
+        <div class="exchange-icons">
+            <div class="step">
+                <i class="fas fa-book"></i>
+                <p>Принесите книгу</p>
+            </div>
+            <div class="step">
+                <i class="fas fa-sync-alt"></i>
+                <p>Мы оценим её</p>
+            </div>
+            <div class="step">
+                <i class="fas fa-smile-beam"></i>
+                <p>Получите новую</p>
+            </div>
+        </div>
+        <button class="btn btn-primary">Узнать правила обмена</button>
+    </section>
+
+    <!-- Отзывы покупателей -->
+    <section id="testimonials" class="testimonials-section fade-in">
+        <h2 class="section-title">Что говорят наши читатели</h2>
+        <div class="testimonials-grid">
+            <!-- Отзыв 1 -->
+            <div class="testimonial-card">
+                <p class="testimonial-text">Отличное издание "Тайн Рима"! Качественный переплёт, плотная бумага, иллюстрации превосходного качества. Доставка была быстрой, книга пришла в идеальном состоянии.</p>
+                <div class="testimonial-author">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Мария" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                        <h4>Мария К.</h4>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Отзыв 2 -->
+            <div class="testimonial-card">
+                <p class="testimonial-text">Давно искал редкую биографию Черчилля. В обычных магазинах не найти, а здесь оказалась в наличии! Менеджеры помогли оформить заказ, всё прошло гладко.</p>
+                <div class="testimonial-author">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Алексей" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                        <h4>Алексей П.</h4>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Отзыв 3 -->
+            <div class="testimonial-card">
+                <p class="testimonial-text">Участвую в программе обмена уже полгода — отличная возможность обновить домашнюю библиотеку без больших затрат. Коллекция постоянно пополняется интересными находками!</p>
+                <div class="testimonial-author">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="Елена" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                        <h4>Елена С.</h4>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Заказ книг -->
+    <section id="order">
+        <h2 class="section-title">Оформить заказ</h2>
+        <div class="order-form">
+            <form>
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" placeholder="Иван Иванов" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="example@mail.ru" required>
+                </div>
+                <div class="form-group">
+                    <label for="book-choice">Какую книгу вы ищете?</label>
+                    <input type="text" id="book-choice" placeholder="Название или автор" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Комментарий к заказу</label>
+                    <textarea id="message" rows="4" placeholder="Укажите адрес доставки или вопросы..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить заказ</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contact">
+        <h2 class="section-title">Контакты</h2>
+        <div class="contact-container">
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Адрес</h3>
+                <p>г. Москва, Исторический переулок, д. 15</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-clock"></i>
+                <h3>Часы работы</h3>
+                <p>Пн-Пт: 10:00 - 20:00</p>
+                <p>Сб-Вс: 11:00 - 18:00</p>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                <h3>Связь</h3>
+                <p>+7 (999) 123-45-67</p>
+                <p>info@history-book.ru</p>
+            </div>
+        </div>
+        <footer>
+            <p>&copy; 2023 Интернет-магазин «Историческая книга». Все права защищены.</p>
+        </footer>
+    </section>
+
+    <!-- Скрипт для мобильного меню -->
+    <script>
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Закрывать меню при клике на ссылку
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // --- КНОПКА НАВЕРХ ---
+        const scrollTopBtn = document.createElement('button');
+        scrollTopBtn.className = 'scroll-top';
+        scrollTopBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        document.body.appendChild(scrollTopBtn);
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 400) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        // --- FADE-IN АНИМАЦИЯ ПРИ СКРОЛЛЕ ---
+        const fadeElements = document.querySelectorAll('.fade-in, .book-card, .testimonial-card, .about-content, .exchange-icons');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const fadeObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Добавляем небольшую задержку для последовательного появления
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        fadeElements.forEach(el => {
+            if (!el.classList.contains('fade-in')) {
+                el.classList.add('fade-in');
+            }
+            fadeObserver.observe(el);
+        });
+    </script>
+</body>
+</html>

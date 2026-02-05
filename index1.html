@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Историческая книга | Специализированный магазин</title>
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --color-bg-light: #F9F5F0; /* Кремовый светлый */
+            --color-bg-dark: #EFE6D5;  /* Кремовый темный */
+            --color-primary: #3E2723;  /* Темно-коричневый (текст/фон) */
+            --color-accent: #8D6E63;   /* Бронзовый (кнопки/акценты) */
+            --color-accent-hover: #5D4037;
+            --color-text-main: #2C1B18;
+            --color-white: #ffffff;
+            --shadow-card: 0 4px 15px rgba(62, 39, 35, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            color: var(--color-text-main);
+            background-color: var(--color-bg-light);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-primary);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-accent);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--color-accent);
+            color: var(--color-white);
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--color-accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            background-color: var(--color-primary);
+            color: var(--color-bg-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #D7CCC8;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 400;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -5px;
+            left: 0;
+            background-color: #D7CCC8;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #D7CCC8;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Menu Toggle (Simplified CSS) */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none; /* В реальном проекте нужен JS для бургера, здесь упрощено */
+            }
+            .mobile-nav-note {
+                display: block;
+                font-size: 0.8rem;
+                color: #ccc;
+            }
+        }
+        
+        /* --- HERO SECTION --- */
+        #home {
+            background-image: linear-gradient(rgba(44, 27, 24, 0.7), rgba(44, 27, 24, 0.7)), url('https://images.unsplash.com/photo-1507842217121-9e87bd229f83?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--color-white);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #F9F5F0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- ABOUT US --- */
+        #about {
+            background-color: var(--color-bg-light);
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            color: #5D4037;
+        }
+
+        .history-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--color-accent);
+        }
+
+        /* --- NEW ARRIVALS (GRID) --- */
+        #new-arrivals {
+            background-color: var(--color-bg-dark);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .book-card {
+            background: var(--color-white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(62, 39, 35, 0.2);
+        }
+
+        .book-img {
+            height: 350px;
+            background-color: #ddd;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .book-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            font-size: 0.9rem;
+            color: #795548;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .book-price {
+            font-weight: 700;
+            color: var(--color-accent);
+            font-size: 1.2rem;
+        }
+
+        .tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            border-radius: 2px;
+        }
+
+        /* --- CATEGORIES (Russian & Foreign) --- */
+        .category-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .cat-text {
+            flex: 1;
+            padding: 60px;
+            min-width: 300px;
+        }
+        
+        .cat-img {
+            flex: 1;
+            min-width: 300px;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        #russian-books .cat-img {
+            background-image: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        }
+
+        #foreign-books {
+            background-color: var(--color-bg-dark);
+            flex-direction: row-reverse; /* Меняем порядок для разнообразия */
+        }
+        
+        #foreign-books .cat-img {
+            background-image: url('https://images.unsplash.com/photo-1524578271613-d550eacf6090?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        }
+
+        /* --- EXCHANGE --- */
+        #exchange {
+            background-color: var(--color-bg-light);
+            text-align: center;
+        }
+
+        .exchange-box {
+            border: 2px dashed var(--color-accent);
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+
+        /* --- ORDER FORM --- */
+        #order {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        #order .section-title {
+            color: var(--color-white);
+        }
+        
+        #order .section-title::after {
+            background-color: #D7CCC8;
+        }
+
+        .order-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            font-family: inherit;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        .btn-submit {
+            background-color: #D7CCC8;
+            color: var(--color-primary);
+            width: 100%;
+        }
+        
+        .btn-submit:hover {
+            background-color: #fff;
+            color: var(--color-primary);
+        }
+
+        /* --- CONTACTS & FOOTER --- */
+        #contact {
+            background-color: var(--color-bg-dark);
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-item h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        footer {
+            background-color: #23120f;
+            color: #8D6E63;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE ADJUSTMENTS --- */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .section-padding {
+                padding: 50px 0;
+            }
+            .nav-menu {
+                display: none; /* Для простоты, на мобильных скрываем меню, нужен JS для toggle */
+            }
+            header .container {
+                justify-content: center;
+            }
+            .category-section {
+                flex-direction: column;
+            }
+            #foreign-books {
+                flex-direction: column;
+            }
+            .cat-img {
+                width: 100%;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Навигация -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">📖 Историческая книга</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#about" class="nav-link">О нас</a></li>
+                    <li><a href="#new-arrivals" class="nav-link">Новинки</a></li>
+                    <li><a href="#russian-books" class="nav-link">Книги РФ</a></li>
+                    <li><a href="#foreign-books" class="nav-link">In English</a></li>
+                    <li><a href="#exchange" class="nav-link">Обмен</a></li>
+                    <li><a href="#contact" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Главный экран -->
+    <section id="home">
+        <div class="container hero-content">
+            <h1>Погрузитесь в эпоху</h1>
+            <p>Уникальная коллекция исторической литературы: от древних летописей до мемуаров XX века.</p>
+            <a href="#new-arrivals" class="btn">Перейти в каталог</a>
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section id="about" class="section-padding">
+        <div class="container about-content">
+            <div class="history-icon">🏛</div>
+            <h2 class="section-title">Наша история</h2>
+            <p class="about-text">
+                Магазин «Историческая книга» был основан в 2010 году группой энтузиастов и историков. 
+                Мы верим, что история — это не просто даты, а живые судьбы. 
+                В нашей коллекции собраны редкие издания, академические труды и лучшие биографии, 
+                тщательно отобранные для истинных ценителей прошлого.
+            </p>
+        </div>
+    </section>
+
+    <!-- Новинки (Меню предпросмотра) -->
+    <section id="new-arrivals" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Последние поступления</h2>
+            <div class="books-grid">
+                <!-- Книга 1 -->
+                <div class="book-card">
+                    <span class="tag">New</span>
+                    <div class="book-img">
+                        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Книга">
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">Закат Империи</h3>
+                        <p class="book-author">Александр Михайлов</p>
+                        <p class="book-price">1 200 ₽</p>
+                    </div>
+                </div>
+                <!-- Книга 2 -->
+                <div class="book-card">
+                    <span class="tag">Хит</span>
+                    <div class="book-img">
+                        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Книга">
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">Тайны Древнего Рима</h3>
+                        <p class="book-author">Луций В.</p>
+                        <p class="book-price">950 ₽</p>
+                    </div>
+                </div>
+                <!-- Книга 3 -->
+                <div class="book-card">
+                    <div class="book-img">
+                        <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Книга">
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">Средневековый быт</h3>
+                        <p class="book-author">Елена Смирнова</p>
+                        <p class="book-price">1 100 ₽</p>
+                    </div>
+                </div>
+                <!-- Книга 4 -->
+                <div class="book-card">
+                    <div class="book-img">
+                        <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Книга">
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">Война и Мир. Том 1</h3>
+                        <p class="book-author">Лев Толстой</p>
+                        <p class="book-price">800 ₽</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#order" class="btn">Посмотреть все</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Книги на Русском -->
+    <section id="russian-books" class="category-section">
+        <div class="cat-text">
+            <h2>Книги на русском языке</h2>
+            <p style="margin: 20px 0;">Огромный выбор отечественной исторической литературы. Монографии, сборники документов, мемуары полководцев и политиков. Мы сотрудничаем с ведущими издательствами России.</p>
+            <a href="#order" class="btn">Выбрать</a>
+        </div>
+        <div class="cat-img"></div>
+    </section>
+
+    <!-- Книги на Иностранных -->
+    <section id="foreign-books" class="category-section">
+        <div class="cat-text">
+            <h2>Books in Foreign Languages</h2>
+            <p style="margin: 20px 0;">Discover history through original texts. We offer books in English, French, and German covering European, Asian, and American history. Original editions and high-quality prints.</p>
+            <a href="#order" class="btn">Choose</a>
+        </div>
+        <div class="cat-img"></div>
+    </section>
+
+    <!-- Обмен книг -->
+    <section id="exchange" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Поменяемся?</h2>
+            <div class="exchange-box">
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">У вас есть прочитанные исторические книги, которые пылятся на полке?</p>
+                <p style="margin-bottom: 30px;">Принесите их нам и получите скидку до <strong>30%</strong> на покупку новых изданий или обменяйте на книги из нашего букинистического отдела.</p>
+                <a href="#contact" class="btn">Узнать правила</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Заказ книг -->
+    <section id="order" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Заказать книгу</h2>
+            <form class="order-form">
+                <div class="form-group">
+                    <input type="text" placeholder="Ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Ваш Email" required>
+                </div>
+                <div class="form-group">
+                    <select>
+                        <option value="" disabled selected>Выберите категорию</option>
+                        <option value="rus">Книги на русском</option>
+                        <option value="eng">Книги на иностранном</option>
+                        <option value="rare">Редкие издания</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Название книги или описание заказа"></textarea>
+                </div>
+                <button type="submit" class="btn btn-submit">Отправить заявку</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Контакты</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <h3>📍 Адрес</h3>
+                    <p>г. Москва, ул. Историческая, д. 12</p>
+                    <p>Рядом с метро "Библиотечная"</p>
+                </div>
+                <div class="contact-item">
+                    <h3>⏰ Время работы</h3>
+                    <p>Пн-Пт: 10:00 - 20:00</p>
+                    <p>Сб-Вс: 11:00 - 18:00</p>
+                </div>
+                <div class="contact-item">
+                    <h3>📞 Связь</h3>
+                    <p>Тел: +7 (999) 000-00-00</p>
+                    <p>Email: info@historybook.ru</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Интернет-магазин «Историческая книга». Все права защищены.</p>
+    </footer>
+
+</body>
+</html>
